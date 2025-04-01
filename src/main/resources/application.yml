@@ -2,7 +2,7 @@ server:
   port: 8080
 
 app:
-  secret-key: szs!mjseo1234!@#
+  secret-key: szs-mj-practice-very-long-secret-key-for-jwt-signing-123456789
 
 spring:
   datasource:

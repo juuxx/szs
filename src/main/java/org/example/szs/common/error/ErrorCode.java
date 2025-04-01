@@ -9,9 +9,10 @@ public enum ErrorCode {
 	DUPLICATED_USER_ID(409, "U001", "이미 사용 중인 사용자 ID입니다."),
 	UNAUTHORIZED_USER(401, "U002", "인증되지 않은 사용자입니다."),
 	FORBIDDEN_USER(403, "U003", "접근 권한이 없습니다."),
-
+	USER_NOT_FOUND(404, "U001", "사용자를 찾을 수 없습니다."),
+	INVALID_CREDENTIALS(401, "U002", "아이디 또는 비밀번호가 일치하지 않습니다."),
 	// Domain-specific
-	INVALID_SSN(400, "D001", "유효하지 않은 주민등록번호입니다.");
+	INVALID_SSN(400, "D001", "유효하지 않은 주민등록번호입니다."), ;
 
 	private final int status;
 	private final String code;

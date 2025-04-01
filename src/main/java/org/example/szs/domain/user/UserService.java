@@ -2,10 +2,12 @@ package org.example.szs.domain.user;
 
 import java.util.Map;
 
+import org.example.szs.api.user.LoginRequest;
 import org.example.szs.api.user.SignupRequest;
 import org.example.szs.common.error.BusinessException;
 import org.example.szs.common.error.ErrorCode;
 import org.example.szs.common.utils.AES256Util;
+import org.example.szs.infra.jwt.JwtTokenProvider;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,7 @@ public class UserService {
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final AES256Util aes256Util;
+	private final JwtTokenProvider jwtTokenProvider;
 
 	private static final Map<String, String> WHITELIST = Map.of(
 		"동탁", "921108-1582816",
@@ -58,5 +61,19 @@ public class UserService {
 			.build();
 
 		userRepository.save(user);
+	}
+
+	public String login(LoginRequest request) {
+		// 1. 사용자 조회
+		User user = userRepository.findByUserId(request.userId())
+			.orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+
+		// 2. 비밀번호 검증
+		if (!passwordEncoder.matches(request.password(), user.getPassword())) {
+			throw new BusinessException(ErrorCode.INVALID_CREDENTIALS);
+		}
+
+		// 3. JWT 토큰 발급
+		return jwtTokenProvider.createToken(user.getUserId());
 	}
 }

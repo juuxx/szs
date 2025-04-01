@@ -2,31 +2,37 @@ package org.example.szs.common.security;
 
 import static org.springframework.security.config.Customizer.*;
 
+import org.example.szs.infra.jwt.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+	private final JwtAuthenticationFilter jwtFilter;
+
 	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
-			.csrf(csrf -> csrf
-				.ignoringRequestMatchers("/h2-console/**", "/szs/signup") // CSRF 무시
-			)
-			.headers(headers -> headers
-				.frameOptions(frameOptions -> frameOptions.sameOrigin()) // H2 iframe 허용
-			)
+			.csrf(csrf -> csrf.ignoringRequestMatchers("/szs/**", "/h2-console/**"))
+			.headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
 			.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/h2-console/**", "/szs/signup").permitAll() // 누구나 접근 가능
-				.anyRequest().authenticated() // 나머지는 인증 필요
+				.requestMatchers("/szs/signup", "/szs/login", "/h2-console/**").permitAll()
+				.anyRequest().authenticated()
 			)
-			.formLogin(withDefaults()); // 로그인 폼 (JWT 붙이기 전까지는 개발용)
+			.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
 		return http.build();
 	}
