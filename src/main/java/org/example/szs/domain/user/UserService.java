@@ -3,6 +3,8 @@ package org.example.szs.domain.user;
 import java.util.Map;
 
 import org.example.szs.api.user.SignupRequest;
+import org.example.szs.common.error.BusinessException;
+import org.example.szs.common.error.ErrorCode;
 import org.example.szs.common.utils.AES256Util;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,12 +31,12 @@ public class UserService {
 		// 1. 화이트리스트 체크
 		if (!WHITELIST.containsKey(request.getName()) ||
 			!WHITELIST.get(request.getName()).equals(request.getRegNo())) {
-			throw new IllegalArgumentException("가입 불가능한 사용자입니다.");
+			throw new BusinessException(ErrorCode.UNAUTHORIZED_USER);
 		}
 
 		// 2. 중복 체크
 		if (userRepository.findByUserId(request.getUserId()).isPresent()) {
-			throw new IllegalStateException("이미 존재하는 사용자 ID입니다.");
+			throw new BusinessException(ErrorCode.DUPLICATED_USER_ID);
 		}
 
 		// 3. 비밀번호 암호화
