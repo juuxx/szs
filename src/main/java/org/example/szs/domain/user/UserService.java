@@ -48,7 +48,7 @@ public class UserService {
 		// 4. 주민등록번호 분리 & 암호화
 		String regNo = request.getRegNo().replace("-", ""); // ex: "921108-1582816"
 		String regNoPrefix = regNo.substring(0, 7); // "9211081"
-		String regNoSuffix = regNo.substring(8);    // "582816"
+		String regNoSuffix = regNo.substring(7);    // "582816"
 		String encryptedSuffix = aes256Util.encrypt(regNoSuffix);
 
 		// 5. 저장
