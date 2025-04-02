@@ -21,3 +21,8 @@ spring:
     console:
       enabled: true
       path: /h2-console
+
+external:
+  scrap:
+    base-url: https://codetest-v4.3o3.co.kr
+    api-key: eUdJijcuJgmN/xtBKyK2bg==
