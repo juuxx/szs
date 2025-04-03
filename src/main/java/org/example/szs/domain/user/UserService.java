@@ -6,7 +6,6 @@ import org.example.szs.api.user.LoginRequest;
 import org.example.szs.api.user.SignupRequest;
 import org.example.szs.common.error.BusinessException;
 import org.example.szs.common.error.ErrorCode;
-import org.example.szs.common.utils.AES256Util;
 import org.example.szs.infra.jwt.JwtTokenProvider;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,8 +18,8 @@ public class UserService {
 
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
-	private final AES256Util aes256Util;
 	private final JwtTokenProvider jwtTokenProvider;
+	private final RegNoEncryptor regNoEncryptor;
 
 	private static final Map<String, String> WHITELIST = Map.of(
 		"동탁", "921108-1582816",
@@ -46,18 +45,15 @@ public class UserService {
 		String encryptedPw = passwordEncoder.encode(request.getPassword());
 
 		// 4. 주민등록번호 분리 & 암호화
-		String regNo = request.getRegNo().replace("-", ""); // ex: "921108-1582816"
-		String regNoPrefix = regNo.substring(0, 7); // "9211081"
-		String regNoSuffix = regNo.substring(7);    // "582816"
-		String encryptedSuffix = aes256Util.encrypt(regNoSuffix);
+		EncryptedRegNo encryptedRegNo = regNoEncryptor.encrypt(request.getRegNo());
 
 		// 5. 저장
 		User user = User.builder()
 			.userId(request.getUserId())
 			.password(encryptedPw)
 			.name(request.getName())
-			.regNoPrefix(regNoPrefix)
-			.regNoSuffix(encryptedSuffix)
+			.regNoPrefix(encryptedRegNo.prefix())
+			.regNoSuffix(encryptedRegNo.suffix())
 			.build();
 
 		userRepository.save(user);
