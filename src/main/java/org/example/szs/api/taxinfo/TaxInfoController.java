@@ -1,6 +1,6 @@
-package org.example.szs.api.scrap;
+package org.example.szs.api.taxinfo;
 
-import org.example.szs.domain.scrap.ScrapService;
+import org.example.szs.domain.taxinfo.TaxInfoService;
 import org.example.szs.infra.auth.CurrentUser;
 import org.example.szs.infra.auth.LoginUser;
 import org.example.szs.infra.feign.dto.ScrapApiResponse;
@@ -12,13 +12,13 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
-public class ScrapController {
+public class TaxInfoController {
 
-	private final ScrapService scrapService;
+	private final TaxInfoService taxInfoService;
 
 	@PostMapping("/szs/scrap")
-	public ResponseEntity<ScrapApiResponse> ddd(@CurrentUser LoginUser loginUser) throws Exception {
-		ScrapApiResponse scrapApiResponse = scrapService.callScrap(loginUser);
+	public ResponseEntity<ScrapApiResponse.ScrapResult> ddd(@CurrentUser LoginUser loginUser) throws Exception {
+		ScrapApiResponse.ScrapResult scrapApiResponse = taxInfoService.callScrap(loginUser);
 		return ResponseEntity.ok().body(scrapApiResponse);
 	}
 }

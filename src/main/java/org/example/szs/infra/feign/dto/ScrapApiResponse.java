@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ScrapApiResponse {
 
-	private String status;
+	private ScrapApiStatus status;
 
 	private ScrapResult data;
 
