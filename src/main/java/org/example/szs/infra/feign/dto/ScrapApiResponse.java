@@ -1,5 +1,6 @@
 package org.example.szs.infra.feign.dto;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -25,10 +26,14 @@ public class ScrapApiResponse {
 		private String name;
 
 		@JsonProperty("종합소득금액")
-		private int totalIncome;
+		private BigDecimal totalIncome;
 
 		@JsonProperty("소득공제")
 		private ScrapDeduction deduction;
+
+		public String getYear() {
+			return String.valueOf(this.deduction.getCreditCard().getYear());
+		}
 	}
 
 	@Getter
