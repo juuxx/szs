@@ -57,8 +57,15 @@
 ## 🚀 실행 방법
 
 - 기본 포트: http://localhost:8080
-- H2 콘솔: http://localhost:8080/h2-console
 - swagger: http://localhost:8080/3o3/swagger.html
+
+### 🗂 H2 데이터베이스 설정
+
+- **DB 유형**: H2 Embedded (In-Memory)
+- **JDBC URL**: `jdbc:h2:mem:testdb`
+- **Username**: `sa`
+- **Password**: *(없음)*
+- **H2 Console 경로**: [http://localhost:8080/h2-console](http://localhost:8080/h2-console)
 
 ---
 
