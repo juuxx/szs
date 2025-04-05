@@ -19,6 +19,90 @@
 
 ---
 
+## 📃️ 엔티티 구성도 (ERD)
+
+### 🧑‍ User
+
+| 커럼명        | 타입           | 설명                                  |
+|---------------|----------------|-------------------------------------|
+| id            | Long (PK)      | 기본 키                                |
+| userId        | String (UNIQUE)| 사용자 아이디                             |
+| password      | String         | 비밀번호 (암호화)                          |
+| name          | String         | 사용자 이름                              |
+| regNoPrefix   | String         | 주민등록번호 앞 7자리(YYYYMMDDG) 생년월일 + 성별숫자 |
+| regNoSuffix   | String         | 주민등록번호 뒤 6자리 (암호화)                  |
+| createdAt     | Timestamp      | 생성 일시                               |
+| updatedAt     | Timestamp      | 수정 일시                               |
+
+---
+
+### 📄 TaxInfo
+
+| 커럼명             | 타입           | 설명                |
+|--------------------|----------------|-------------------|
+| id                 | Long (PK)      | 기본 키              |
+| user_id            | Long (FK)      | 사용자 ID            |
+| taxYear            | String         | 과세 연도 (예: "2023") |
+| totalIncomeAmount  | BigDecimal     | 종합소득금액            |
+| taxCreditAmount    | BigDecimal     | 세액공제              |
+| totalDeductionAmount| BigDecimal    | 총 소득공제 금액         |
+| createdAt          | Timestamp      | 생성 일시             |
+| updatedAt          | Timestamp      | 수정 일시             |
+| createdBy        | String     | 생성자               |
+| updatedBy        | Timestamp  | 수정자               |
+
+
+> 🔗 관계: `User (1) ↔ (N) TaxInfo`<br>
+> 🔐 제약조건: UNIQUE(user_id, tax_year)
+
+---
+
+### 💰 PensionDeduction (국민연금 공제)
+
+| 커럼명              | 타입         | 설명                  |
+|------------------|------------|---------------------|
+| id               | Long (PK)  | 기본 키                |
+| tax_info_id      | Long (FK)  | TaxInfo 참조          |
+| user_id          | Long (FK)  | 사용자 ID              |
+| year(tax_year)   | String     | 연도 (예: "2023")      |
+| month(tax_month) | String     | 월 (예: "01", "02" 등) |
+| amount           | BigDecimal | 공제 금액               |
+| createdAt        | Timestamp  | 생성 일시               |
+| updatedAt        | Timestamp  | 수정 일시               |
+| createdBy        | String     | 생성자                 |
+| updatedBy        | Timestamp  | 수정자                 |
+
+> 🔐 제약조건: UNIQUE(user_id, tax_year, tax_month)
+
+---
+
+### 💳 CreditCardDeduction (신용카드 소득공제)
+
+| 커럼명              | 타입        | 설명                                    |
+|------------------|-------------|-----------------------------------------|
+| id               | Long (PK)   | 기본 키                                 |
+| tax_info_id      | Long (FK)   | TaxInfo 참조                            |
+| user_id          | Long (FK)   | 사용자 ID                               |
+| year(tax_year)   | String      | 연도                                    |
+| month(tax_month) | String      | 월                                      |
+| amount           | BigDecimal  | 사용 금액                               |
+| createdAt        | Timestamp   | 생성 일시                               |
+| updatedAt        | Timestamp   | 수정 일시                               |
+| createdBy        | String     | 생성자                 |
+| updatedBy        | Timestamp  | 수정자                 |
+
+
+> 🔐 제약조건: UNIQUE(user_id, tax_year, tax_month)
+
+---
+
+### 🔁 관계
+
+```
+User (1) ───< TaxInfo (1) ───< PensionDeduction
+                         └───< CreditCardDeduction
+```
+
 ## 📌 주요 기능
 
 ### ✅ 회원가입 & 로그인
@@ -76,3 +160,5 @@
 | POST   | /szs/login     | 로그인 및 JWT 발급       |
 | POST   | /szs/scrap     | 소득 정보 스크래핑       |
 | GET    | /szs/refund    | 결정세액 조회            |
+
+
