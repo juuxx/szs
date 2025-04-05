@@ -26,3 +26,14 @@ external:
   scrap:
     base-url: https://codetest-v4.3o3.co.kr
     api-key: eUdJijcuJgmN/xtBKyK2bg==
+
+#feign:
+#  client:
+#    config:
+#      default:
+#        read-timeout: 25000
+#        connect-timeout: 5000
+
+springdoc:
+  swagger-ui:
+    path: /3o3/swagger.html

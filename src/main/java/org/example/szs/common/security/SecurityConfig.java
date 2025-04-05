@@ -1,7 +1,5 @@
 package org.example.szs.common.security;
 
-import static org.springframework.security.config.Customizer.*;
-
 import org.example.szs.infra.jwt.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +26,7 @@ public class SecurityConfig {
 			.csrf(csrf -> csrf.ignoringRequestMatchers("/szs/**", "/h2-console/**"))
 			.headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
 			.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/szs/signup", "/szs/login", "/h2-console/**").permitAll()
+				.requestMatchers("/szs/signup", "/szs/login", "/h2-console/**",  "/3o3/**", "/v3/api-docs/**").permitAll()
 				.anyRequest().authenticated()
 			)
 			.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
