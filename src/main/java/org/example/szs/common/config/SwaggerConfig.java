@@ -15,9 +15,8 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 @OpenAPIDefinition(
 	tags = {
 		@Tag(name = "01-인증", description = "로그인 / 회원가입"),
-		@Tag(name = "02-스크래핑", description = "스크래핑 데이터 조회")
-		// ,
-		// @Tag(name = "03-산출세액", description = "산출세액 계산")
+		@Tag(name = "02-스크래핑", description = "스크래핑 데이터 조회"),
+		@Tag(name = "03-산출세액", description = "산출세액 계산")
 	}
 )
 @Configuration
