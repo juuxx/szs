@@ -15,10 +15,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TaxInfoMapper {
 
-	private final ScrapApiResponse.ScrapResult result;
+	private final ScrapApiResponse result;
 	private final User user;
 
-	public static TaxInfoMapper of(ScrapApiResponse.ScrapResult result, User user) {
+	public static TaxInfoMapper of(ScrapApiResponse result, User user) {
 		return new TaxInfoMapper(result, user);
 	}
 

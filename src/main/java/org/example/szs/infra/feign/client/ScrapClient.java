@@ -1,6 +1,7 @@
 package org.example.szs.infra.feign.client;
 
 import org.example.szs.infra.feign.config.ScrapFeignConfig;
+import org.example.szs.infra.feign.dto.ExternalApiResponse;
 import org.example.szs.infra.feign.dto.ScrapApiResponse;
 import org.example.szs.infra.feign.dto.ScrapRequest;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -14,5 +15,5 @@ import org.springframework.web.bind.annotation.RequestBody;
 )
 public interface ScrapClient {
 	@PostMapping(value = "/scrap", consumes = "application/json")
-	ScrapApiResponse scrap(@RequestBody ScrapRequest request);
+	ExternalApiResponse<ScrapApiResponse> scrap(@RequestBody ScrapRequest request);
 }

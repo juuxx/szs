@@ -48,10 +48,6 @@ public class TaxInfo extends AbstractAuditingEntity {
 	@OneToMany(mappedBy = "taxInfo", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<CreditCardDeduction> creditCardDeductions = new ArrayList<>();
 
-	public static TaxInfo of(ScrapApiResponse.ScrapResult result, User user) {
-		return null;
-	}
-
 	public void addPensionDeduction(PensionDeduction deduction) {
 		pensionDeductions.add(deduction);
 		deduction.setTaxInfo(this);

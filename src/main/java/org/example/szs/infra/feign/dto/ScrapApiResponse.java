@@ -13,27 +13,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ScrapApiResponse {
 
-	private ScrapApiStatus status;
+	@JsonProperty("이름")
+	private String name;
 
-	private ScrapResult data;
+	@JsonProperty("종합소득금액")
+	private BigDecimal totalIncome;
 
-	private ScrapError errors;
+	@JsonProperty("소득공제")
+	private ScrapDeduction deduction;
 
-	@Getter
-	@NoArgsConstructor
-	public static class ScrapResult {
-		@JsonProperty("이름")
-		private String name;
-
-		@JsonProperty("종합소득금액")
-		private BigDecimal totalIncome;
-
-		@JsonProperty("소득공제")
-		private ScrapDeduction deduction;
-
-		public String getYear() {
-			return String.valueOf(this.deduction.getCreditCard().getYear());
-		}
+	public String getYear() {
+		return String.valueOf(this.deduction.getCreditCard().getYear());
 	}
 
 	@Getter
@@ -66,11 +56,4 @@ public class ScrapApiResponse {
 		private List<Map<String, String>> month;
 	}
 
-	@Getter
-	@NoArgsConstructor
-	public static class ScrapError {
-		private String code;
-		private String message;
-		private Object validations;
-	}
 }
