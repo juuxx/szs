@@ -58,6 +58,7 @@
 
 - 기본 포트: http://localhost:8080
 - H2 콘솔: http://localhost:8080/h2-console
+- swagger: http://localhost:8080/3o3/swagger.html
 
 ---
 
