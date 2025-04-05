@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TaxInfoRepository extends JpaRepository<TaxInfo, Long> {
 	Optional<TaxInfo> findByUserAndTaxYear(User user, String year);
+	Optional<TaxInfo> findTopByUserOrderByTaxYearDesc(User user);
 }
